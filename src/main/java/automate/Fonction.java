@@ -18,7 +18,7 @@ public class Fonction {
     public Automate readAutomate() {
         System.out.println("Please enter the number of file you want to test");
         Scanner scanner = new Scanner(System.in);
-        String fileName = "src/file/file";
+        String fileName = "src/main/java/file/file";
         String fileNum = scanner.next();
         fileName = fileName + fileNum + ".txt";
         Automate automate = new Automate();
@@ -539,19 +539,4 @@ public class Fonction {
         return list;
     }
 
-    public static void main(String[] args) {
-        Fonction fonction = new Fonction();
-        Automate automate = fonction.readAutomate();
-        //automation.afficher_automate();
-
-//        Automation automation1 = main.determinisation_et_completion_automate_asynchrone(automation);
-//        automation1.afficher_automate();
-        Automate s = fonction.minimisation(automate);
-        s.afficher_automate();
-        fonction.automate_complementaire(s);
-        s.afficher_automate();
-
-        //main.reconnaissance_de_mots(s);
-
-    }
 }
