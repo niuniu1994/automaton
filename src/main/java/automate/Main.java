@@ -62,9 +62,11 @@ public class Main {
             System.out.println("Do you want to restart the pogrom? y/n");
             Scanner scanner = new Scanner(System.in);
             String s = scanner.next();
-            if (s != "y"){
+            if (!"y".equals(s)) {
                 flag = false;
             }
         }
     }
+
+
 }
