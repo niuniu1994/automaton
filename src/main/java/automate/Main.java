@@ -37,6 +37,12 @@ public class Main {
             System.out.println("AFDCM");
             automate.afficher_automate();
 
+            //Reconnaissance de mots
+            System.out.println("\n\n");
+            fonction.reconnaissance_de_mots(automate);
+            System.out.println("\n\n");
+
+
             //Langage complémentaire
             fonction.automate_complementaire(automate);
             System.out.println("Automate complementaire");
@@ -50,6 +56,8 @@ public class Main {
             //Reconnaissance de mots
             System.out.println("\n\n");
             fonction.reconnaissance_de_mots(automate);
+            System.out.println("\n\n");
+
 
             System.out.println("Do you want to restart the pogrom? y/n");
             Scanner scanner = new Scanner(System.in);

@@ -3,10 +3,7 @@ package automate;
 import de.vandermeer.asciitable.AsciiTable;
 import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -18,10 +15,20 @@ import java.util.*;
 public class Automate {
     private ArrayList<State> automate;
     private ArrayList<String> characters;
+    private String fileName;
 
     public Automate() {
         automate = new ArrayList<>();
         characters = new ArrayList<>();
+        fileName = null;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public ArrayList<State> getAutomate() {
@@ -88,7 +95,18 @@ public class Automate {
         at.addRule();
         at.setTextAlignment(TextAlignment.CENTER);
         String rend = at.render();
+        rend = rend + "\n";
 
+        try {
+            File file = new File(fileName);
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file,true));
+            byte[] bytes = rend.getBytes();
+            os.write(bytes);
+            os.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println(rend);
     }
 

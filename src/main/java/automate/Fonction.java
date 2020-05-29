@@ -18,17 +18,13 @@ public class Fonction {
     public Automate readAutomate() {
         System.out.println("Please enter the number of file you want to test");
         Scanner scanner = new Scanner(System.in);
-        String fileName = "src/main/java/file/file";
+        String fileName = "src/main/java/file/L3NEW-MpI-14";
         String fileNum = scanner.next();
-        fileName = fileName + fileNum + ".txt";
+        fileName = fileName + "-" + fileNum + ".txt";
+        String traceName = "src/main/java/trace/L3NEW-MpI-14trace-" + fileNum + ".txt";
         Automate automate = new Automate();
+
         ArrayList<State> states = new ArrayList<>();
-
-        if (fileName == null) {
-            System.out.println("filename cant be null");
-            return null;
-        }
-
 
         File file = new File(fileName);
 
@@ -106,6 +102,8 @@ public class Fonction {
             System.out.println("Can not open " + fileName);
         }
 
+        automate.setFileName(traceName);
+
         return automate;
     }
 
@@ -130,26 +128,26 @@ public class Fonction {
         return true;
     }
 
-    public boolean est_un_autotmate_deterministe(Automate automate){
+    public boolean est_un_autotmate_deterministe(Automate automate) {
         ArrayList<State> states = automate.getAutomate();
         ArrayList<String> chars = automate.getCharacters();
 
         int i = 0;
 
-        for (State s : states){
-            if (s.isStart()){
-                i ++;
+        for (State s : states) {
+            if (s.isStart()) {
+                i++;
             }
         }
 
-        if (i >= 2){
+        if (i >= 2) {
             return false;
         }
 
-        for (State s : states){
-            for (String c : chars){
+        for (State s : states) {
+            for (String c : chars) {
                 ArrayList<State> ss = s.getAllTransition(c);
-                if (ss.size() > 1){
+                if (ss.size() > 1) {
                     return false;
                 }
             }
@@ -162,7 +160,9 @@ public class Fonction {
         ArrayList<String> characters = af.getCharacters();
         characters.remove("#");
         Automate afdc = new Automate();
+        afdc.setFileName(af.getFileName());
         afdc.setCharacters(characters);
+
         Set<State> setOfInit = new HashSet<>();
         Stack<State> stack = new Stack<>();
 
@@ -225,7 +225,6 @@ public class Fonction {
         State poupelle = new State("p");
         ArrayList<State> states = automate.getAutomate();
         states.add(poupelle);
-        automate.setAutomate(states);
         ArrayList<String> characters = automate.getCharacters();
 
         for (State s : states) {
@@ -243,6 +242,7 @@ public class Fonction {
         ArrayList<String> chars = automate.getCharacters();
 
         Automate newAutomate = new Automate();
+        newAutomate.setFileName(automate.getFileName());
         ArrayList<State> newStates = new ArrayList<>();
         newAutomate.setCharacters(chars);
 
@@ -273,21 +273,16 @@ public class Fonction {
                     for (State s : fl) {
                         //compare states in the same second level group
                         Set<State> newSet = new HashSet<>();
-                        State state = s;
 
                         for (State state1 : fl) {
                             //judge the arrive state using c belongs to the same second level group or not
                             boolean flag = true;
                             for (String ch : chars) {
                                 //in AFDC there is only single arrive state for each character
-                                State s1 = state.getAllTransition(ch).get(0);
+                                State s1 = s.getAllTransition(ch).get(0);
                                 State s2 = state1.getAllTransition(ch).get(0);
                                 for (Set<State> tl : o) {
-                                    if (tl.contains(s1) && tl.contains(s2)) {
-                                        continue;
-                                    } else if (!tl.contains(s1) && !tl.contains(s2)) {
-                                        continue;
-                                    } else if (tl.contains(s1) && !tl.contains(s2)) {
+                                    if (tl.contains(s1) && !tl.contains(s2)) {
                                         flag = false;
                                         break;
                                     } else if (!tl.contains(s1) && tl.contains(s2)) {
@@ -354,8 +349,7 @@ public class Fonction {
         boolean flag = true;
         ArrayList<String> arr = null;
         List list = Arrays.asList("e", "n", "d");
-        ArrayList<String> end = new ArrayList<>();
-        end.addAll(list);
+        ArrayList<String> end = new ArrayList<>(list);
 
 
         while (flag) {
@@ -378,10 +372,18 @@ public class Fonction {
             }
         }
 
+        if ( mot.size() == 1 && "#".equals(mot.get(0)) && state.isAccept()){
+            System.out.println("Known word");
+            return;
+        }
+
         for (String c : mot) {
             ArrayList<State> arr = state.getAllTransition(c);
+
+
+
             if (arr.isEmpty()) {
-                System.out.println("Known word");
+                System.out.println("UnKnown word");
                 return;
             } else {
                 state = arr.get(0);
@@ -408,13 +410,13 @@ public class Fonction {
     }
 
     /***
-    * @Parame: automaton
-    * @description: considering standardization is the after determinism
+     * @Parame: automaton
+     * @description: considering standardization is the after determinism
      * which makes automaton only possess single state initial
-    * @return: void
-    * @author: xin kaining
-    * @Date 2020/5/9
-    **/
+     * @return: void
+     * @author: xin kaining
+     * @Date 2020/5/9
+     **/
     public void automate_standard(Automate automate) {
         ArrayList<State> states = automate.getAutomate();
         ArrayList<String> chars = automate.getCharacters();
@@ -427,15 +429,15 @@ public class Fonction {
         }
 
         boolean flag = true;
-        for (String c : chars){
-            if (start.getAllTransition(c).equals(start)){
+        for (String c : chars) {
+            if (start.getAllTransition(c).equals(start)) {
                 flag = false;
             }
         }
 
         if (flag) {
-           return;
-        }else {
+            return;
+        } else {
             start.setStart(false);
 
             State newStart = new State("i");
