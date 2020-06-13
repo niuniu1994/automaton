@@ -16,7 +16,8 @@ public class Main {
 
         while (flag) {
             automate = fonction.readAutomate();
-
+            System.out.println("Automate");
+            automate.afficher_automate();
             //Déterminisation et complétion
             if (fonction.est_un_automate_asynchrone(automate)) {
                 automate = fonction.determinisation_et_completion_automate_asynchrone(automate);

@@ -18,10 +18,10 @@ public class Fonction {
     public Automate readAutomate() {
         System.out.println("Please enter the number of file you want to test");
         Scanner scanner = new Scanner(System.in);
-        String fileName = "src/main/java/file/L3NEW-MpI-14";
+        String fileName = "src/main/java/file/L3NEW-MpI-9";
         String fileNum = scanner.next();
         fileName = fileName + "-" + fileNum + ".txt";
-        String traceName = "src/main/java/trace/L3NEW-MpI-14trace-" + fileNum + ".txt";
+        String traceName = "src/main/java/trace/L3NEW-MpI-9trace-" + fileNum + ".txt";
         Automate automate = new Automate();
 
         ArrayList<State> states = new ArrayList<>();
@@ -217,7 +217,9 @@ public class Fonction {
                 }
             }
         }
-        completion(afdc);
+        if (!est_un_automate_complet(afdc)){
+            completion(afdc);
+        }
         return afdc;
     }
 
@@ -420,38 +422,35 @@ public class Fonction {
     public void automate_standard(Automate automate) {
         ArrayList<State> states = automate.getAutomate();
         ArrayList<String> chars = automate.getCharacters();
-        State start = null;
+        Set<State> starts = new HashSet<>();
+        Map<String, HashSet<State>> ends = new HashMap<>();
 
         for (int i = 0; i < states.size(); i++) {
             if (states.get(i).isStart()) {
-                start = states.get(i);
+                states.get(i).setStart(false);
+                starts.add(states.get(i));
             }
         }
 
-        boolean flag = true;
-        for (String c : chars) {
-            if (start.getAllTransition(c).equals(start)) {
-                flag = false;
+        for (State start : starts){
+            for (String ch : chars){
+                ends.put(ch,new HashSet<>());
+                for (State state : start.getAllTransition(ch)){
+                    ends.get(ch).add(state);
+                }
             }
         }
 
-        if (flag) {
-            return;
-        } else {
-            start.setStart(false);
+        State i = new State("i");
+        i.setStart(true);
 
-            State newStart = new State("i");
-            newStart.setStart(true);
-
-            start.setStart(false);
-            for (String c : chars) {
-                State s = start.getAllTransition(c).get(0);
-                newStart.addTransition(s, c);
+        for (String s : ends.keySet()){
+            for (State state : ends.get(s)){
+                i.addTransition(state,s);
             }
-
-            states.add(newStart);
         }
 
+        states.add(i);
     }
 
 

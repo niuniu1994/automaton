@@ -8,7 +8,6 @@
     <artifactId>automaton</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
     <dependencies>
         <dependency>
             <groupId>de.vandermeer</groupId>
